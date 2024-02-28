@@ -63,52 +63,19 @@ async function reject() {
 reject();
 
 //Number 4
-function getData() {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const characters = 'abcdefghijklmnopqrstuvwxyz';
-      const randomCharacter = characters[Math.floor(Math.random() * characters.length)];
-      resolve(randomCharacter);
-    }, 500);
-  });
-}
 
-async function rejectResolve() {
-  return new Promise(async (resolve, reject) => {
-    let attempts = 0;
+ function rejectResolve() {
+        return new Promise((reject, resolve) => {
+          setTimeout(() => {
+            for (let n = 0; n < 2; n++) {
+              if (n === 1) {
+                console.log("Resolve Function 4");
+              } else {
+                console.log("Reject Function 4");
+              }
+            }
+          }, 500);
+        });
+      }
 
-    const attemptOperation = (isResolve) => {
-      setTimeout(async () => {
-        try {
-          const result = await getData();
-          console.log(isResolve ? 'Resolved:' : 'Rejected:', result);
-
-          if (isResolve) {
-            resolve(result);
-          } else {
-            reject('Operation failed. Promise rejected.');
-          }
-        } catch (error) {
-          attempts++;
-          if (attempts < 2) {
-            console.error('Attempt', attempts, 'failed. Retrying...');
-            attemptOperation(isResolve);
-          } else {
-            reject('Maximum attempts reached. Promise rejected.');
-          }
-        }
-      }, 500);
-    };
-
-    attemptOperation(false); // Reject
-    attemptOperation(true);  // Resolve
-  });
-}
-
-rejectResolve()
-  .then((data) => {
-    console.log('Final Resolved:', data);
-  })
-  .catch((error) => {
-    console.error('Final Rejected:', error);
-  });
+      rejectResolve();
